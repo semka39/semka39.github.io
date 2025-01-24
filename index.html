@@ -1,0 +1,347 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>semka39</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: Arial, sans-serif;
+            line-height: 1.6;
+            overflow-x: hidden;
+        }
+
+        .intro {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            flex-direction: column;
+            height: 100vh;
+            background: #000;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .intro canvas {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 1;
+        }
+
+        .intro .content {
+            position: relative;
+            z-index: 2;
+            text-align: center;
+            color: #fff;
+        }
+
+        .intro h1 {
+            font-size: 4rem;
+            margin-bottom: 10px;
+        }
+
+        .intro p {
+            font-size: 1.5rem;
+            margin-bottom: 20px;
+        }
+
+        .intro .socials {
+            position: absolute;
+            bottom: 20px;
+            left: 20px;
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            z-index: 3;
+        }
+
+        .intro .socials a {
+            color: #fff;
+            text-decoration: none;
+            font-size: 1.5rem;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            transition: opacity 0.3s;
+        }
+
+        .intro .socials a:hover {
+            opacity: 0.7;
+        }
+
+        .intro .socials a img {
+            width: 24px;
+            height: 24px;
+        }
+
+.projects {
+    display: grid;
+    gap: 20px;
+    padding: 40px;
+    background: linear-gradient(135deg, #1e3c72, #2a5298);
+    color: #fff;
+}
+
+.two-projects {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr); /* Для секции с двумя проектами */
+    gap: 20px;
+}
+
+.two-projects .project {
+    min-height: 300px; /* Увеличиваем высоту проектов в секции с двумя */
+}
+
+.three-projects {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr); /* Для секции с тремя проектами */
+    gap: 20px;
+}
+
+.project {
+    position: relative;
+    border-radius: 10px;
+    overflow: hidden;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    transition: transform 0.3s;
+}
+
+.project:hover {
+    transform: scale(1.05);
+}
+
+.project img {
+    height: 100%;
+    object-fit: contain;
+}
+
+
+.project:hover img {
+    opacity: 0.3;
+}
+
+.project .info {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    background: linear-gradient(180deg, transparent, rgba(0, 0, 0, 0.7));
+    color: #fff;
+    padding: 10px;
+    box-sizing: border-box;
+}
+
+.project .info h3 {
+    margin: 0;
+    font-size: 1.25rem;
+}
+
+.project .info p {
+    display: none;
+    margin: 5px 0 0;
+    font-size: 1rem;
+}
+
+.project:hover .info p {
+    display: block;
+}
+
+.project a {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 1;
+    text-indent: -9999px;
+}
+
+    </style>
+</head>
+<body>
+    <section class="intro">
+        <canvas id="backgroundCanvas"></canvas>
+        <div class="content">
+            <h1>semka39</h1>
+            <p>C# hobbyist programmer</p>
+        </div>
+        <div class="socials">
+            <a href="https://github.com/semka39" target="_blank">
+                <img src="images/github-mark.png" alt="GitHub">
+                GitHub
+            </a>
+            <a href="https://steamcommunity.com/id/SemionD/" target="_blank">
+                <img src="images/steam_icon.png" alt="Steam">
+                Steam
+            </a>
+            <a href="https://discordapp.com/users/1316681327424180284/" target="_blank">
+                <img src="images/discord-icon.svg">
+                Discord
+            </a>
+        </div>
+    </section>
+<section class="projects">
+    <div class="two-projects">
+        <div class="project">
+            <img src="images/gob-life.png">
+            <div class="info">
+                <h3>GOB-Life</h3>
+                <p>Simulation of natural selection with sexual reproduction.</p>
+            </div>
+            <a href="https://github.com/semka39/GOB-Life">View Project</a>
+        </div>
+        <div class="project">
+            <img src="images/neu-cells.png">
+            <div class="info">
+                <h3>NeuCells</h3>
+                <p>My old neural network-based natural selection simulation.</p>
+            </div>
+            <a href="https://github.com/semka39/NeuCells">View Project</a>
+        </div>
+    </div>
+
+    <div class="two-projects">
+        <div class="project">
+            <img src="images/4d-visualizer.png">
+            <div class="info">
+                <h3>4D-Visualizer</h3>
+                <p>A simple demonstration of 4D cube projections.</p>
+            </div>
+            <a href="https://github.com/semka39/4D-vizualizer">View Project</a>
+        </div>
+        <div class="project">
+            <img src="images/dynamic-time.png">
+            <div class="info">
+                <h3>DynamicTime Simulation</h3>
+                <p>An example of using the concept of dynamic time in a particle motion simulation.</p>
+            </div>
+            <a href="https://github.com/semka39/DynamicTime-simulation">View Project</a>
+        </div>
+    </div>
+	
+    <div class="three-projects">
+        <div class="project">
+            <img src="images/pc-voice-assistant.png">
+            <div class="info">
+                <h3>PC Voice Assistant</h3>
+                <p>A voice assistant that interacts with a computer.</p>
+            </div>
+            <a href="https://github.com/semka39/PC-Voice-assistant">View Project</a>
+        </div>
+        <div class="project">
+            <img src="images/HadalZone.png">
+            <div class="info">
+                <h3>HadalZone</h3>
+                <p>A roguelike game on a custom engine. The engine is currently in a closed development stage.</p>
+            </div>
+            <a href="https://github.com/semka39/HadalZone">View Project</a>
+        </div>
+		<div class="project">
+            <img src="images/SeaBattle.png">
+            <div class="info">
+                <h3>Sea Battle Bot</h3>
+                <p>A simulation of a complex attack algorithm for the game Sea Battle.</p>
+            </div>
+            <a href="https://github.com/semka39/SeaBattleCheat">View Project</a>
+        </div>
+    </div>
+</section>
+
+
+
+    <script>
+        const canvas = document.getElementById('backgroundCanvas');
+        const ctx = canvas.getContext('2d');
+
+        canvas.width = window.innerWidth;
+        canvas.height = window.innerHeight;
+
+        window.addEventListener('resize', () => {
+            canvas.width = window.innerWidth;
+            canvas.height = window.innerHeight;
+            initializeCells();
+            draw();
+        });
+
+        let cells = [];
+        const cellSize = 10;
+
+        // Фиксированное правило B378/S235678
+        const birth = [3];
+        const survive = [2, 3];
+
+        function initializeCells() {
+            cells = [];
+            const cols = Math.ceil(canvas.width / cellSize);
+            const rows = Math.ceil(canvas.height / cellSize);
+            for (let y = 0; y < rows; y++) {
+                for (let x = 0; x < cols; x++) {
+                    cells.push({ x: x * cellSize, y: y * cellSize, alive: Math.random() > 0.7 });
+                }
+            }
+        }
+
+        function draw() {
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            cells.forEach(cell => {
+                ctx.fillStyle = cell.alive ? '#1e3c72' : '#2a5298'; // Новый цвет
+                ctx.fillRect(cell.x, cell.y, cellSize, cellSize);
+            });
+        }
+
+        function update() {
+            const newCells = cells.map((cell, i) => {
+                const neighbors = getNeighbors(i);
+                const aliveNeighbors = neighbors.filter(n => n.alive).length;
+
+                // Применяем правило B378/S235678
+                const isAlive = cell.alive
+                    ? survive.includes(aliveNeighbors)
+                    : birth.includes(aliveNeighbors);
+
+                return {
+                    ...cell,
+                    alive: isAlive
+                };
+            });
+            cells.splice(0, cells.length, ...newCells);
+        }
+
+        function getNeighbors(index) {
+            const cols = Math.ceil(canvas.width / cellSize);
+            const rows = Math.ceil(canvas.height / cellSize);
+            const x = Math.floor(cells[index].x / cellSize);
+            const y = Math.floor(cells[index].y / cellSize);
+            const neighbors = [];
+
+            for (let dy = -1; dy <= 1; dy++) {
+                for (let dx = -1; dx <= 1; dx++) {
+                    if (dx === 0 && dy === 0) continue;
+                    const nx = (x + dx + cols) % cols; // Горизонтальный цикл
+                    const ny = (y + dy + rows) % rows; // Вертикальный цикл
+                    neighbors.push(cells[ny * cols + nx]);
+                }
+            }
+            return neighbors;
+        }
+
+        function animate() {
+            update();
+            draw();
+            requestAnimationFrame(animate);
+        }
+
+        initializeCells();
+        animate();
+    </script>
+</body>
+</html>
