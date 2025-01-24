@@ -279,11 +279,11 @@
     const survive = [2, 3];
 
     let lastUpdate = 0;
-    const updateInterval = 33; // 10 FPS
+    const updateInterval = 33;
 
     function initializeCells() {
         cells = [];
-        cellSize = Math.max(10, Math.ceil(canvas.width / 100)); // Минимальный размер клетки — 10 пикселей
+        cellSize = Math.max(10, Math.ceil(canvas.width / 200)); // Минимальный размер клетки — 10 пикселей
         const cols = Math.ceil(canvas.width / cellSize);
         const rows = Math.ceil(canvas.height / cellSize);
         for (let y = 0; y < rows; y++) {
