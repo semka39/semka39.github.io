@@ -258,90 +258,137 @@
 
 
 
-    <script>
-        const canvas = document.getElementById('backgroundCanvas');
-        const ctx = canvas.getContext('2d');
+<script>
+    const canvas = document.getElementById('backgroundCanvas');
+    const ctx = canvas.getContext('2d');
 
+    canvas.width = window.innerWidth;
+    canvas.height = window.innerHeight;
+
+    window.addEventListener('resize', () => {
         canvas.width = window.innerWidth;
         canvas.height = window.innerHeight;
+        initializeCells();
+        initializeNeighbors();
+    });
 
-        window.addEventListener('resize', () => {
-            canvas.width = window.innerWidth;
-            canvas.height = window.innerHeight;
-            initializeCells();
-            draw();
-        });
+    let cells = [];
+    let cellSize;
+    let neighborIndices = [];
+    const birth = [3];
+    const survive = [2, 3];
 
-        let cells = [];
-        const cellSize = 10;
+    let lastUpdate = 0;
+    const updateInterval = 33; // 10 FPS
 
-        // Фиксированное правило B378/S235678
-        const birth = [3];
-        const survive = [2, 3];
-
-        function initializeCells() {
-            cells = [];
-            const cols = Math.ceil(canvas.width / cellSize);
-            const rows = Math.ceil(canvas.height / cellSize);
-            for (let y = 0; y < rows; y++) {
-                for (let x = 0; x < cols; x++) {
-                    cells.push({ x: x * cellSize, y: y * cellSize, alive: Math.random() > 0.7 });
-                }
+    function initializeCells() {
+        cells = [];
+        cellSize = Math.max(10, Math.ceil(canvas.width / 100)); // Минимальный размер клетки — 10 пикселей
+        const cols = Math.ceil(canvas.width / cellSize);
+        const rows = Math.ceil(canvas.height / cellSize);
+        for (let y = 0; y < rows; y++) {
+            for (let x = 0; x < cols; x++) {
+                cells.push({ 
+                    x: x * cellSize, 
+                    y: y * cellSize, 
+                    alive: Math.random() > 0.7, 
+                    forcedLife: 0 // Счётчик принудительного времени жизни
+                });
             }
         }
+    }
 
-        function draw() {
-            ctx.clearRect(0, 0, canvas.width, canvas.height);
-            cells.forEach(cell => {
-                ctx.fillStyle = cell.alive ? '#1e3c72' : '#2a5298'; // Новый цвет
-                ctx.fillRect(cell.x, cell.y, cellSize, cellSize);
-            });
-        }
-
-        function update() {
-            const newCells = cells.map((cell, i) => {
-                const neighbors = getNeighbors(i);
-                const aliveNeighbors = neighbors.filter(n => n.alive).length;
-
-                // Применяем правило B378/S235678
-                const isAlive = cell.alive
-                    ? survive.includes(aliveNeighbors)
-                    : birth.includes(aliveNeighbors);
-
-                return {
-                    ...cell,
-                    alive: isAlive
-                };
-            });
-            cells.splice(0, cells.length, ...newCells);
-        }
-
-        function getNeighbors(index) {
-            const cols = Math.ceil(canvas.width / cellSize);
-            const rows = Math.ceil(canvas.height / cellSize);
-            const x = Math.floor(cells[index].x / cellSize);
-            const y = Math.floor(cells[index].y / cellSize);
+    function initializeNeighbors() {
+        const cols = Math.ceil(canvas.width / cellSize);
+        const rows = Math.ceil(canvas.height / cellSize);
+        neighborIndices = cells.map((_, index) => {
+            const x = Math.floor(index % cols);
+            const y = Math.floor(index / cols);
             const neighbors = [];
-
             for (let dy = -1; dy <= 1; dy++) {
                 for (let dx = -1; dx <= 1; dx++) {
                     if (dx === 0 && dy === 0) continue;
-                    const nx = (x + dx + cols) % cols; // Горизонтальный цикл
-                    const ny = (y + dy + rows) % rows; // Вертикальный цикл
-                    neighbors.push(cells[ny * cols + nx]);
+                    const nx = (x + dx + cols) % cols;
+                    const ny = (y + dy + rows) % rows;
+                    neighbors.push(ny * cols + nx);
                 }
             }
             return neighbors;
-        }
+        });
+    }
 
-        function animate() {
+    function draw() {
+        // Прозрачный слой для эффекта "моушен блюра"
+        ctx.fillStyle = "rgba(42, 82, 152, 0.5)"; // Полупрозрачный чёрный цвет
+        ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+        cells.forEach(cell => {
+            if (cell.alive) {
+                ctx.fillStyle = '#1e3c72';
+                ctx.fillRect(cell.x, cell.y, cellSize, cellSize);
+            }
+        });
+    }
+
+    function update() {
+        const newCells = cells.map((cell, i) => {
+            if (cell.forcedLife > 0) {
+                // Если счётчик принудительного времени жизни больше 0, уменьшаем его
+                return {
+                    ...cell,
+                    forcedLife: cell.forcedLife - 1,
+                    alive: true
+                };
+            }
+
+            const aliveNeighbors = neighborIndices[i].filter(n => cells[n].alive).length;
+            const isAlive = cell.alive
+                ? survive.includes(aliveNeighbors)
+                : birth.includes(aliveNeighbors);
+            return {
+                ...cell,
+                alive: isAlive
+            };
+        });
+        cells.splice(0, cells.length, ...newCells);
+    }
+
+    function getCellIndex(x, y) {
+        const col = Math.floor(x / cellSize);
+        const row = Math.floor(y / cellSize);
+        const cols = Math.ceil(canvas.width / cellSize);
+        return row * cols + col;
+    }
+
+    canvas.addEventListener('mousemove', (event) => {
+        const rect = canvas.getBoundingClientRect();
+        const mouseX = event.clientX - rect.left;
+        const mouseY = event.clientY - rect.top;
+
+        const cellIndex = getCellIndex(mouseX, mouseY);
+        if (cells[cellIndex]) {
+            cells[cellIndex].forcedLife = 3; // Устанавливаем принудительный счётчик в 3 шага
+            cells[cellIndex].alive = true;  // Делаем клетку живой
+        }
+    });
+
+    function animate(timestamp) {
+        if (timestamp - lastUpdate > updateInterval) {
             update();
             draw();
-            requestAnimationFrame(animate);
+            lastUpdate = timestamp;
         }
+        requestAnimationFrame(animate);
+    }
 
-        initializeCells();
-        animate();
-    </script>
+    initializeCells();
+    initializeNeighbors();
+    animate();
+</script>
+
+
+
+
+
 </body>
 </html>
